@@ -1,0 +1,11 @@
+{
+  "name": "tfsam-api",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "https://github.com/tiagomelojuca/tfsam-api.git",
+  "author": "Tiago Melo Juca <tiagomelojuca@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
