@@ -1,4 +1,5 @@
 const knex = require('../db');
+const config = require('../config.json');
 
 class CharacterController {
 
@@ -35,7 +36,7 @@ class CharacterController {
         }
     
         // Let's verify if character's name was sent, and if it exists
-        if( name === undefined ) {
+        if( name === undefined || name === '' ) {
             return response.status(400).json( { error: "Character's name is required." } );
         }
     
@@ -47,10 +48,10 @@ class CharacterController {
         // Validating the sent Vocation
         let vocationId;
         if( vocation === undefined ) {
-            vocationId = 0;
+            vocationId = config.defaultCharacter.vocation;
         } else {
             const vocationLowerCase = vocation.toString().toLowerCase();
-            vocationId = 0;
+            vocationId = config.defaultCharacter.vocation;
             if( vocationLowerCase === 'sorcerer' || vocationLowerCase === '1' ) vocationId = 1;
             if( vocationLowerCase === 'druid' || vocationLowerCase === '2' ) vocationId = 2;
             if( vocationLowerCase === 'paladin' || vocationLowerCase === '3' ) vocationId = 3;
@@ -58,8 +59,8 @@ class CharacterController {
         }
     
         // Validating the sent Gender
-        let genderId = 0;
-        let looktype = 136;
+        let genderId = config.defaultCharacter.sex;
+        let looktype = config.defaultCharacter.looktype;
         if( gender != undefined ) {
             const genderAsString = gender.toString().toLowerCase();
             if( genderAsString === 'male' || genderAsString === '1' ) {
@@ -71,81 +72,32 @@ class CharacterController {
         // Validating the sent Town
         let townId;
         if( town === undefined ) {
-            townId = 1;
+            townId = config.defaultCharacter.town_id;
         } else {
             if( Number.isInteger( town ) ) {
                 townId = town;
             } else {
-                townId = 1;
+                townId = config.defaultCharacter.town_id;
             }
         }
     
         // Let's construct our character
-        const character = {
-            name: name,
-            group_id: 1,
-            account_id: account_id,
-            level: 8,
-            vocation: vocationId,
-            health: 185,
-            healthmax: 185,
-            experience: 4200,
-            lookbody: 68,
-            lookfeet: 76,
-            lookhead: 78,
-            looklegs: 58,
-            looktype: looktype,
-            lookaddons: 0,
-            direction: 2,
-            maglevel: 0,
-            mana: 90,
-            manamax: 90,
-            manaspent: 0,
-            soul: 100,
-            town_id: townId,
-            posx: 5,
-            posy: 5,
-            posz: 2,
-            // conditions: null,
-            cap: 470,
-            sex: genderId,
-            lastlogin: 0,
-            lastip: 0,
-            save: 1,
-            skull: 0,
-            skulltime: 0,
-            lastlogout: 0,
-            blessings: 0,
-            onlinetime: 0,
-            deletion: 0,
-            balance: 0,
-            offlinetraining_time: 43200,
-            offlinetraining_skill: -1,
-            stamina: 2520,
-            skill_fist: 10,
-            skill_fist_tries: 0,
-            skill_club: 10,
-            skill_club_tries: 0,
-            skill_sword: 10,
-            skill_sword_tries: 0,
-            skill_axe: 10,
-            skill_axe_tries: 0,
-            skill_dist: 10,
-            skill_dist_tries: 0,
-            skill_shielding: 10,
-            skill_shielding_tries: 0,
-            skill_fishing: 10,
-            skill_fishing_tries: 0,
-        }
+        const character = config.defaultCharacter;
+        character.name = name;
+        character.account_id = account_id;
+        character.vocation = vocationId;
+        character.sex = genderId;
+        character.looktype = looktype;
+        character.town_id = townId;
     
         const insertedCharacter = await knex('players').insert(character);
         
-        const resposta = {
+        const outputData = {
             id: insertedCharacter[0],
             ...character
         };
     
-        return response.json( resposta );
+        return response.json( outputData );
     
     }
 

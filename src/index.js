@@ -1,12 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+
+const config = require('./config.json');
 const AccountController = require('./controllers/AccountController');
 const CharacterController = require('./controllers/CharacterController');
 
 const server = express();
 server.use(express.json());
 server.use(cors( {
-    origin: 'http://yourdomain.com',
+    origin: config.corsOrigin,
     optionsSuccessStatus: 200
 } ));
 
@@ -21,4 +23,4 @@ server.get('/characters', characterController.index);
 server.get('/characters/:name', characterController.show);
 server.post('/characters', characterController.create);
 
-server.listen(3333);
+server.listen(config.port);

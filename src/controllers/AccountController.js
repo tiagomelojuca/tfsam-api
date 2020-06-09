@@ -1,4 +1,5 @@
 const knex = require('../db');
+const config = require('../config.json');
 const sha1 = require('sha1');
 
 class AccountController {
@@ -49,26 +50,21 @@ class AccountController {
         // Generating some info
         const encryptedPass = sha1(password);
         const creation = Date.now().toString().slice(0, 10);
-    
-        const account = {
-            name: name,
-            password: encryptedPass,
-            secret: null,
-            type: 1,
-            premdays: 0,
-            lastday: 0,
-            email: verifiedEmail,
-            creation: creation
-        }
+
+        const account = config.defaultAccount;
+        account.name = name;
+        account.password = encryptedPass;
+        account.email = verifiedEmail;
+        account.creation = creation;
     
         const insertedAccId = await knex('accounts').insert(account);
         
-        const resposta = {
+        const outputData = {
             id: insertedAccId[0],
             ...account
         };
     
-        return response.json(resposta);
+        return response.json(outputData);
     
     }
 

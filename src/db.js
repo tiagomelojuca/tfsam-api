@@ -1,12 +1,13 @@
 const knex = require('knex');
+const config = require('./config.json');
 
 const db = knex({
     client: 'mysql',
     connection: {
-        host : '127.0.0.1',
-        user : 'root',
-        password : '',
-        database : 'tfsam'
+        host: config.connection.host,
+        user: config.connection.user,
+        password: config.connection.password,
+        database: config.connection.database
     }
 });
 
