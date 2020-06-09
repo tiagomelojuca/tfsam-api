@@ -2,10 +2,20 @@
   "name": "tfsam-api",
   "version": "0.1.0",
   "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
   "repository": "https://github.com/tiagomelojuca/tfsam-api.git",
   "author": "Tiago Melo Juca <tiagomelojuca@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "knex": "^0.21.1",
+    "mysql": "^2.18.1",
+    "sha1": "^1.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
